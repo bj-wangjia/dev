@@ -1,0 +1,132 @@
+call plug#begin('~/.vim/plugged')
+"Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'preservim/nerdtree'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+Plug 'jiangmiao/auto-pairs'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-startify'
+Plug 'lfv89/vim-interestingwords'
+Plug 'frazrepo/vim-rainbow'
+Plug 'preservim/nerdcommenter'
+Plug 'honza/vim-snippets'
+Plug 'patstockwell/vim-monokai-tasty'
+
+" Add maktaba and codefmt to the runtimepath.
+" (The latter must be installed before it can be used.)
+"Plug 'google/vim-maktaba'
+"Plug 'google/vim-codefmt'
+" Also add Glaive, which is used to configure codefmt's maktaba flags. See
+" `:help :Glaive` for usage.
+"Plug 'google/vim-glaive'
+call plug#end()
+
+"call glaive#Install()
+" Optional: Enable codefmt's default mappings on the <Leader>= prefix.
+"Glaive codefmt plugin[mappings]
+"Glaive codefmt google_java_executable="java -jar /path/to/google-java-format-VERSION-all-deps.jar"
+
+set laststatus=2
+if !has('gui_running')
+        set t_Co=256
+endif
+
+set encoding=utf-8
+set number
+:set nocompatible
+:set backspace=indent,eol,start
+
+" intend
+set ts=2
+set sts=2
+set shiftwidth=2
+set expandtab
+set autoindent
+set bg=dark
+set cursorline
+set cursorcolumn
+set noswapfile
+set hlsearch
+
+" Only do this part when compiled with support for autocommands
+if has("autocmd")
+ " In text files, always limit the width of text to 78 characters
+ autocmd BufRead *.txt set tw=78
+ " When editing a file, always jump to the last cursor position
+autocmd BufReadPost *
+ \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+ \ exe "normal g'\"" |
+ \ endif
+endif
+
+" LeaderF
+let g:Lf_PreviewInPopup = 1
+
+" air-line
+set laststatus=2  "永远显示状态栏
+let g:airline_powerline_fonts = 1  " 支持 powerline 字体
+let g:airline#extensions#tabline#enabled = 1 " 显示窗口tab和bufferlet
+"g:airline_theme='moloai'  " murmur配色不错
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_left_sep = '▶'
+let g:airline_left_alt_sep = '❯'
+let g:airline_right_sep = '◀'
+let g:airline_right_alt_sep = '❮'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+
+" vim-interestingwords
+let mapleader=","
+nnoremap <silent> <leader>k :call InterestingWords('n')<cr>
+vnoremap <silent> <leader>k :call InterestingWords('v')<cr>
+nnoremap <silent> <leader>K :call UncolorAllWords()<cr>
+
+nnoremap <silent> n :call WordNavigation(1)<cr>
+nnoremap <silent> N :call WordNavigation(0)<cr>
+
+let g:rainbow_active = 1
+let g:rainbow_load_separately = [
+    \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
+    \ [ '*.tex' , [['(', ')'], ['\[', '\]']] ],
+    \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']], ['<', '>']],
+    \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']] ],
+    \ ]
+let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta', 'lightcyan', 'lightcyan']
+
+" nerdtree
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+
+
+
+" nerdcommenter
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" coc snippets
+let g:coc_disable_startup_warning = 1
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
+colorscheme vim-monokai-tasty
+

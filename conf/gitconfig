@@ -1,0 +1,15 @@
+[alias]
+	co = checkout
+	br = branch
+	st = status
+	ci = commit
+[url "ssh://git@github.com"]
+	insteadOf = https://github.com
+
+[url "ssh://code.devops.xiaohongshu.com"]
+	insteadOf = http://code.devops.xiaohongshu.com
+[user]
+	email = chenxin@xiaohongshu.com
+	name = chenxin 
+[core]
+	excludesfile = ~/.gitignore_global
